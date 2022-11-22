@@ -6,12 +6,13 @@ export function getPredictedDiseases() {
         "Measure of the relevance of inhibiting a particular protein kinase for a specific cancer", 1, 0);
     ps.addPrediction("Carcinoma, Non-Small-Cell Lung", "MESH:D002289", 0.85);
     ps.addPrediction("Lung Neoplasms", "MESH:D008175", 0.7400128810648348);
+    ps.addCitation(getCitation());
     return ps.asJSON();
 }
 
 export function getPredictedTargets() {
     const ps = new PredictionSet("Predicted Kinase", "Protein", "probability",
-        "Measure of the relevance of inhibiting a particular protein kinase for a specific cancer", 1, 0);
+        "Measure of the relevance of inhibiting a particular protein kinase for a specific cancer", 1, 0, "card");
     ps.addPrediction("MOK", null, 0.925);
     ps.addPrediction("AMHR2", null, 0.915);
     return ps.asJSON();

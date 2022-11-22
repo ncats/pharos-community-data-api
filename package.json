@@ -1,4 +1,5 @@
 {
+  "main": "index.js",
   "name": "pharos-predictions-test-api",
   "version": "1.0.0",
   "description": "A test API to be used to develop ",

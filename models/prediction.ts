@@ -18,16 +18,25 @@ export class PredictionSet {
     confidenceDescription: string;
     confMax: number;
     confMin: number;
+    style: "table" | "card";
+    citation: any;
 
     predictions: Prediction[] = [];
 
-    constructor(name: string, schemaType: string, confidenceName: string, confidenceDescription: string, confMax: number, confMin: number) {
+    constructor(name: string,
+                schemaType: string,
+                confidenceName: string,
+                confidenceDescription: string,
+                confMax: number,
+                confMin: number,
+                style: "table" | "card" = "table") {
         this.name = name;
         this.schemaType = schemaType;
         this.confidenceName = confidenceName;
         this.confidenceDescription = confidenceDescription;
         this.confMax = confMax;
         this.confMin = confMin;
+        this.style = style
     }
 
     addPrediction(value: string, alternateName: string, confidence: number) {
@@ -57,6 +66,14 @@ export class PredictionSet {
                 }
             });
         });
-        return predictions;
+        return {
+            predictions: predictions,
+            style: this.style,
+            citation: this.citation
+        };
+    }
+
+    addCitation(citation: any) {
+        this.citation = citation;
     }
 }
