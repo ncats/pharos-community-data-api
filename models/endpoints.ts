@@ -1,34 +1,36 @@
 import {Request, Response} from "express";
 import url from "url";
 import querystring from "querystring";
-import {getCitation, getPredictedDiseases, getPredictedTargets} from "./modelData";
+import {getPong, getPredictedDiseases, getPredictedLigands, getPredictedTargets} from "./modelData";
+import pinfo = require("../package.json");
+console.log(pinfo);
 
 function setHeaders(res: Response) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
 }
 
-export const ping = (req: Request, res: Response) => {
+function ping(req: Request, res: Response): any {
     setHeaders(res);
     const parsedUrl = url.parse(req.url);
-    if (parsedUrl != null && 'query' in parsedUrl && parsedUrl.query != null) {
-        const queryMap = querystring.parse(parsedUrl.query);
-        res.end(JSON.stringify(queryMap));
-    } else {
-        res.end('pong');
-    }
+    const queryMap = querystring.parse(parsedUrl.query);
+    res.end(JSON.stringify([getPong(queryMap)]));
 }
 
-export const predictions = (req: Request, res: Response) => {
+function predictions(req: Request, res: Response): any {
     setHeaders(res);
     const parsedUrl = url.parse(req.url);
     if (parsedUrl != null && 'query' in parsedUrl) {
-        const queryMap = querystring.parse(parsedUrl.query);
-        const diseaseSet = getPredictedDiseases();
         const targetSet = getPredictedTargets();
+        const diseaseSet = getPredictedDiseases();
+        const ligandSet = getPredictedLigands();
         res.end(JSON.stringify([
+            targetSet,
             diseaseSet,
-            targetSet
+            ligandSet
         ]));
     }
 }
+
+exports.ping = ping;
+exports.predictions = predictions;

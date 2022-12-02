@@ -1,9 +1,27 @@
-import {PredictionSet} from "./prediction";
+import {Prediction, PredictionSet} from "./prediction";
+import {ParsedUrlQuery} from "querystring";
 
+export function getPong(map: ParsedUrlQuery) {
+    const ps = new PredictionSet("Ping Result", "Thing", "probability",
+        "Everything needs a confidence metric, even in a simple ping response",
+        1, 0);
+    const properties = [];
+    for (let field in map) {
+        properties.push(
+        {
+            "@type": "PropertyValue",
+            "name": field,
+            "value": map[field]
+        })
+    }
+    ps.addPrediction("Pong", null, 1, {identifier: properties});
+    return ps.asJSON();
+}
 
 export function getPredictedDiseases() {
     const ps = new PredictionSet("Predicted Cancer", "MedicalCondition", "probability",
-        "Measure of the relevance of inhibiting a particular protein kinase for a specific cancer", 1, 0);
+        "Measure of the relevance of inhibiting a particular protein kinase for a specific cancer",
+        1, 0);
     ps.addPrediction("Carcinoma, Non-Small-Cell Lung", "MESH:D002289", 0.85);
     ps.addPrediction("Lung Neoplasms", "MESH:D008175", 0.7400128810648348);
     ps.addCitation(getCitation());
@@ -12,12 +30,43 @@ export function getPredictedDiseases() {
 
 export function getPredictedTargets() {
     const ps = new PredictionSet("Predicted Kinase", "Protein", "probability",
-        "Measure of the relevance of inhibiting a particular protein kinase for a specific cancer", 1, 0, "card");
+        "Measure of the relevance of inhibiting a particular protein kinase for a specific cancer",
+        1, 0, "card");
     ps.addPrediction("MOK", null, 0.925);
     ps.addPrediction("AMHR2", null, 0.915);
     return ps.asJSON();
 }
 
+export function getPredictedLigands() {
+    const ps = new PredictionSet("Predicted Ligands", "ChemicalSubstance", "Confidence Measure",
+        "Use this field to provide your measure of confidence in your prediction",
+        10, 0, "card");
+    ps.addPrediction("drug name", "alternate name", 0.5,
+        { hasRepresentation: { name: "smiles", value: "CN1CCN(CC1)C1=Nc2cc(Cl)ccc2Nc2ccccc12" } });
+    ps.addPrediction("drug name 2", "alternate name 2", 5,
+        { hasRepresentation: { name: "smiles", value: "FC(F)(F)Oc1cccc(CN2CCN(CC2)C2=Nc3cc(Cl)ccc3Nc3ccccc23)c1" } });
+    ps.addPrediction("drug name 3", "alternate name 3", 2.5,
+        { hasRepresentation: { name: "smiles", value: "COc1ccccc1CNN1c2ccc(Cl)cc2N=C(N2CCN(C)CC2)c2ccccc12" } });
+    ps.addPrediction("drug name 4", "alternate name 4", 1.25,
+        { hasRepresentation: { name: "smiles", value: "CCOc1ccc2ccccc2c1C(=O)NN1c2ccc(Cl)cc2N=C(N2CCN(C)CC2)c2ccccc12" } });
+    ps.addPrediction("drug name 5", "alternate name 5", 3.75,
+        { hasRepresentation: { name: "smiles", value: "COc1cccc(c1)C(=O)NN1c2ccc(Cl)cc2N=C(N2CCN(C)CC2)c2ccccc12" } });
+    ps.addPrediction("drug name 6", "alternate name 6", 9,
+        { hasRepresentation: { name: "smiles", value: "COc1ccc(cc1)C(=O)NN1c2ccc(Cl)cc2N=C(N2CCN(C)CC2)c2ccccc12" } });
+    ps.addCitation(getMinimalCitation());
+    return ps.asJSON();
+}
+export function getMinimalCitation() {
+    return {
+        "@context": "http://schema.org",
+        "@type": "ScholarlyArticle",
+        "identifier": {
+            "@type": "PropertyValue",
+            "name": "PMID",
+            "value": 33156327
+        }
+    };
+}
 export function getCitation() {
     return {
         "@context": "http://schema.org",
@@ -56,6 +105,7 @@ export function getCitation() {
             "name": "PMID",
             "value": 34888523
         },
-        "creditText": "Ravanmehr et al."};
+        "creditText": "Ravanmehr et al."
+    };
 
 }

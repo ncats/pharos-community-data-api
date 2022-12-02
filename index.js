@@ -1,4 +1,4 @@
-import {ping, predictions} from "./models/endpoints";
+const endpoints = require("./models/endpoints");
 
-exports.ping = ping;
-exports.predictions = predictions;
+exports.ping = endpoints.ping;
+exports.predictions = endpoints.predictions;

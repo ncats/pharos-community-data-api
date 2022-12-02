@@ -4,10 +4,12 @@ export class Prediction {
     value: string;
     alternateName: string;
     confidence: number;
-    constructor(value: string, alternateName: string, confidence: number) {
+    extraFields: any;
+    constructor(value: string, alternateName: string, confidence: number, extraFields: any) {
         this.value = value;
         this.alternateName = alternateName;
         this.confidence = confidence;
+        this.extraFields = extraFields;
     }
 }
 
@@ -39,14 +41,14 @@ export class PredictionSet {
         this.style = style
     }
 
-    addPrediction(value: string, alternateName: string, confidence: number) {
-        this.predictions.push(new Prediction(value, alternateName, confidence));
+    addPrediction(value: string, alternateName: string, confidence: number, extraFields: any = null) {
+        this.predictions.push(new Prediction(value, alternateName, confidence, extraFields));
     }
 
     asJSON() : any {
         const predictions: any[] = [];
         this.predictions.forEach(p => {
-            predictions.push({
+            const predictionObj: any = {
                 "@type": "Prediction",
                 "name": this.name,
                 "value": {
@@ -64,7 +66,13 @@ export class PredictionSet {
                     "maxValue": this.confMax,
                     "minValue": this.confMin
                 }
-            });
+            };
+            if (p.extraFields) {
+                for (var k in p.extraFields) {
+                    predictionObj.value[k] = p.extraFields[k];
+                }
+            }
+            predictions.push(predictionObj);
         });
         return {
             predictions: predictions,

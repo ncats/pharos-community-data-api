@@ -1,4 +1,5 @@
-import express, {Application, query, Request, Response} from 'express'
+import express, {Application, query, Request, Response} from 'express';
+// @ts-ignore
 import {ping, predictions} from "./models/endpoints";
 const app: Application = express()
 
