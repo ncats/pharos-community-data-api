@@ -2,8 +2,6 @@ import {Request, Response} from "express";
 import url from "url";
 import querystring from "querystring";
 import {getPong, getPredictedDiseases, getPredictedLigands, getPredictedTargets} from "./modelData";
-import pinfo = require("../package.json");
-console.log(pinfo);
 
 function setHeaders(res: Response) {
     res.setHeader('Content-Type', 'application/json');
@@ -17,7 +15,7 @@ function ping(req: Request, res: Response): any {
     res.end(JSON.stringify([getPong(queryMap)]));
 }
 
-function predictions(req: Request, res: Response): any {
+function sample(req: Request, res: Response): any {
     setHeaders(res);
     const parsedUrl = url.parse(req.url);
     if (parsedUrl != null && 'query' in parsedUrl) {
@@ -31,6 +29,6 @@ function predictions(req: Request, res: Response): any {
         ]));
     }
 }
-
+exports.setHeaders = setHeaders;
 exports.ping = ping;
-exports.predictions = predictions;
+exports.sample = sample;

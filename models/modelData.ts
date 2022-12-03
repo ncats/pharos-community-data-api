@@ -53,17 +53,17 @@ export function getPredictedLigands() {
         { hasRepresentation: { name: "smiles", value: "COc1cccc(c1)C(=O)NN1c2ccc(Cl)cc2N=C(N2CCN(C)CC2)c2ccccc12" } });
     ps.addPrediction("drug name 6", "alternate name 6", 9,
         { hasRepresentation: { name: "smiles", value: "COc1ccc(cc1)C(=O)NN1c2ccc(Cl)cc2N=C(N2CCN(C)CC2)c2ccccc12" } });
-    ps.addCitation(getMinimalCitation());
+    ps.addCitation(getMinimalCitation(33156327));
     return ps.asJSON();
 }
-export function getMinimalCitation() {
+export function getMinimalCitation(pmid: number) {
     return {
         "@context": "http://schema.org",
         "@type": "ScholarlyArticle",
         "identifier": {
             "@type": "PropertyValue",
             "name": "PMID",
-            "value": 33156327
+            "value": pmid
         }
     };
 }
