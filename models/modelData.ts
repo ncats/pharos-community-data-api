@@ -5,16 +5,22 @@ export function getPong(map: ParsedUrlQuery) {
     const ps = new PredictionSet("Ping Result", "Thing", "probability",
         "Everything needs a confidence metric, even in a simple ping response",
         1, 0);
-    const properties = [];
+    const properties: any[] = [];
+    const extraFields: any = {identifier: properties};
     for (let field in map) {
-        properties.push(
-        {
-            "@type": "PropertyValue",
-            "name": field,
-            "value": map[field]
-        })
+        if (field === 'smiles') {
+            extraFields.hasRepresentation = { name: "smiles", value: map[field] };
+            ps.style = "card";
+        } else {
+            properties.push(
+                {
+                    "@type": "PropertyValue",
+                    "name": field,
+                    "value": map[field]
+                });
+        }
     }
-    ps.addPrediction("Pong", null, 1, {identifier: properties});
+    ps.addPrediction("Pong", null, 1, extraFields);
     return ps.asJSON();
 }
 

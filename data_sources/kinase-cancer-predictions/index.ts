@@ -21,38 +21,45 @@ function predictions(req: Request, res: Response): any {
     const queryMap = querystring.parse(parsedUrl.query);
 
     if (queryMap.target) {
-        const data = targetLookup.get(queryMap.target.toString());
-        if (data && data.predictions && data.predictions.length > 0) {
+        const targetQuery = queryMap.target.toString();
+        const targetList = targetQuery.split('|');
+        const predictions: any[] = [];
+        targetList.forEach(target => {
             const ps = new PredictionSet("Predicted Cancer", "MedicalCondition", "probability",
                 "Measure of the relevance of inhibiting a particular protein kinase for a specific cancer",
                 1, 0);
-            data.predictions.forEach((pred: any) => {
-                ps.addPrediction(pred.disease, findMeshID(pred.disease), pred.probability);
-            });
-            ps.addCitation(getMinimalCitation(34888523));
-            res.end(JSON.stringify([
-                ps.asJSON()
-            ]));
-            return;
-        }
+            const data = targetLookup.get(target);
+            if (data && data.predictions && data.predictions.length > 0) {
+                data.predictions.forEach((pred: any) => {
+                    ps.addPrediction(pred.disease, findMeshID(pred.disease), pred.probability);
+                });
+                ps.addCitation(getMinimalCitation(34888523));
+                predictions.push(ps.asJSON());
+            }
+        });
+        res.end(JSON.stringify(predictions));
+        return;
     }
     if (queryMap.disease) {
-        const disease = queryMap.disease.toString();
-        const mesh_id = disease.startsWith("MESH:") ? disease.split(':')[1] : disease;
-        const data = diseaseLookup.get(mesh_id);
-        if (data && data.predictions && data.predictions.length > 0) {
+        const diseaseQuery = queryMap.disease.toString();
+        const diseaseList = diseaseQuery.split('|');
+        const predictions: any[] = [];
+        diseaseList.forEach(disease => {
+            const mesh_id = disease.startsWith("MESH:") ? disease.split(':')[1] : disease;
             const ps = new PredictionSet("Predicted Kinase", "Protein", "probability",
                 "Measure of the relevance of inhibiting a particular protein kinase for a specific cancer",
                 1, 0, "card");
-            data.predictions.forEach((pred: any) => {
-                ps.addPrediction(pred.target, null, pred.probability);
-            });
-            ps.addCitation(getMinimalCitation(34888523));
-            res.end(JSON.stringify([
-                ps.asJSON()
-            ]));
-            return;
-        }
+            const data = diseaseLookup.get(mesh_id);
+            if (data && data.predictions && data.predictions.length > 0) {
+                data.predictions.forEach((pred: any) => {
+                    ps.addPrediction(pred.target, null, pred.probability);
+                });
+                ps.addCitation(getMinimalCitation(34888523));
+                predictions.push(ps.asJSON());
+            }
+        });
+        res.end(JSON.stringify(predictions));
+        return;
     }
     res.end();
 }
