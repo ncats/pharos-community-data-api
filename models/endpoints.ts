@@ -3,7 +3,7 @@ import url from "url";
 import querystring from "querystring";
 import {getPong, getPredictedDiseases, getPredictedLigands, getPredictedTargets} from "./modelData";
 
-function setHeaders(res: Response) {
+export function setHeaders(res: Response) {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Origin', '*');
 }
