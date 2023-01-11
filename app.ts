@@ -1,4 +1,4 @@
-import express, {Application, query, Request, Response} from 'express';
+import express, {Application, Request, Response} from 'express';
 // @ts-ignore
 import {ping, sample} from "./models/endpoints";
 // @ts-ignore

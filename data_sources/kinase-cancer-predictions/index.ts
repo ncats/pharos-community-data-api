@@ -2,7 +2,7 @@ import fs from "fs";
 import {Request, Response} from "express";
 import url from "url";
 import querystring from "querystring";
-import {getCitation, getMinimalCitation, getPong} from "../../models/modelData";
+import {getMinimalCitation} from "../../models/modelData";
 // @ts-ignore
 import {setHeaders} from "../../models/endpoints";
 import {PredictionSet} from "../../models/prediction";
