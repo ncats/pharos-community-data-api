@@ -13,6 +13,9 @@ app.get("/sample?*", (req: Request, res: Response) => sample(req, res));
 
 app.get("/predictions?*", (req: Request, res: Response) => predictions(req, res));
 
+import {associations} from "./data_sources/alliance-genome/index"
+app.get("/associations?*", (req: Request, res: Response) => associations(req, res));
+
 app.listen(port, function () {
     console.log(`App is listening on port ${port} !`)
 });
