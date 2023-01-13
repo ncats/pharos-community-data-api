@@ -2,7 +2,7 @@ const fs = require("fs");
 require('typescript-require');
 const { parseCSV, replacer } = require("./utilities");
 const { XMLParser} = require("fast-xml-parser");
-const meshXML = fs.readFileSync(__dirname + "/../../desc2022.xml", {encoding:"utf-8"});
+const meshXML = fs.readFileSync(__dirname + "/../../desc2023.xml", {encoding:"utf-8"});
 const meshJSON = new XMLParser().parse(meshXML);
 const meshLookup: any[] = meshJSON.DescriptorRecordSet.DescriptorRecord;
 
