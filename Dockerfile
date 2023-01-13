@@ -9,7 +9,7 @@ ENV NODE_OPTIONS --max-old-space-size=4096
 RUN npm install -g npm@latest
 RUN npm install
 RUN npm install -g typescript
-RUN curl https://nlmpubs.nlm.nih.gov/projects/mesh/MESH_FILES/xmlmesh/desc2022.xml > desc2022.xml
+RUN curl https://nlmpubs.nlm.nih.gov/projects/mesh/MESH_FILES/xmlmesh/desc2023.xml > desc2023.xml
 WORKDIR /pharos-community-data-api/data_sources/kinase-cancer-predictions
 RUN node build
 WORKDIR /pharos-community-data-api

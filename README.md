@@ -21,7 +21,7 @@ A test API to be used for Pharos' dynamic predictions functionality.
 5. **OPTIONAL - Build Kinase-Cancer-Predictions endpoint**
     * download MESH IDs
        ```aidl
-       curl https://nlmpubs.nlm.nih.gov/projects/mesh/MESH_FILES/xmlmesh/desc2022.xml > desc2022.xml
+       curl https://nlmpubs.nlm.nih.gov/projects/mesh/MESH_FILES/xmlmesh/desc2023.xml > desc2023.xml
        ```
     * build lookup tables for Kinase-Cancer Predictions
        ```aidl
