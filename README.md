@@ -21,7 +21,7 @@ A test API to be used for Pharos' dynamic predictions functionality.
 5. **OPTIONAL - Build Kinase-Cancer-Predictions endpoint**
     * download MESH IDs
        ```aidl
-       curl https://nlmpubs.nlm.nih.gov/projects/mesh/MESH_FILES/xmlmesh/desc2022.xml > desc2022.xml
+       curl https://nlmpubs.nlm.nih.gov/projects/mesh/MESH_FILES/xmlmesh/desc2023.xml > desc2023.xml
        ```
     * build lookup tables for Kinase-Cancer Predictions
        ```aidl
@@ -67,13 +67,14 @@ A test API to be used for Pharos' dynamic predictions functionality.
 
 ### Add your own endpoint
 Here are the steps for creating your own endpoint. As an example, it downloads data from Alliance Genome for display on Disease Details pages.
+See the GitHub branch called "tutorial" for finished example for reference (note, you'd still have to download the data and build the lookup file to run the API).
 1. Download target-disease associations from Alliance Genome and unzip it in a new folder ```./data_sources/alliance-genome```
     ```aidl
     mkdir ./data_sources/alliance-genome
     curl https://download.alliancegenome.org/5.3.0/DISEASE-ALLIANCE-JSON/HUMAN/DISEASE-ALLIANCE-JSON_HUMAN_25.json.gz > ./data_sources/alliance-genome/disease-alliance-json_human_25.json.gz
     gunzip ./data_sources/alliance-genome/disease-alliance-json_human_25.json.gz
     ```
-
+ 
 2. Write a build script to format the data for easy access
     * in the /data_sources/alliance-genome folder, create a file called ```build.ts```
     * at the top of build.ts, read the unzipped input file
