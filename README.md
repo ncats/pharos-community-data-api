@@ -7,7 +7,7 @@ A test API to be used for Pharos' dynamic predictions functionality.
     * ![img.png](images/img.png)
     * Select your account as the owner
 2. Check out your fork locally
-    ```aidl
+    ```
     git clone https://github.com/{{your github ID}}/pharos-community-data-api
     ```
 3. Navigate to source code directory
