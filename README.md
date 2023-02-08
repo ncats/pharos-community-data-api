@@ -11,7 +11,7 @@ A test API to be used for Pharos' dynamic predictions functionality.
     git clone https://github.com/{{your github ID}}/pharos-community-data-api
     ```
 3. Navigate to source code directory
-   ```aidl
+   ```
    cd /pharos-community-data-api
    ```
 4. Install all dependencies
@@ -20,11 +20,11 @@ A test API to be used for Pharos' dynamic predictions functionality.
     ```
 5. **OPTIONAL - Build Kinase-Cancer-Predictions endpoint**
     * download MESH IDs
-       ```aidl
+       ```
        curl https://nlmpubs.nlm.nih.gov/projects/mesh/MESH_FILES/xmlmesh/desc2023.xml > desc2023.xml
        ```
     * build lookup tables for Kinase-Cancer Predictions
-       ```aidl
+       ```
        cd data_sources/kinase-cancer-predictions
        node build
        cd ../..
@@ -37,29 +37,29 @@ A test API to be used for Pharos' dynamic predictions functionality.
     app.get("/predictions?*", (req: Request, res: Response) => predictions(req, res));
     ```
 7. Install typescript if you haven't already
-    ```aidl
+    ```
     npm install -g typescript
     ```
 8. Compile the typescript and run the app
-    ```aidl
+    ```
     tsc && node app
     ```
 9. Verify it works.
     * Navigate to:
-        ```aidl
+        ```
         http://localhost:3001/ping
         ```
     * it should return some JSON
 10. Hit your API from the Pharos Development deployment
     * Navigate to:
-    ```aidl
+    ```
     https://pharos-frontend-dev.appspot.com/toolbox
     ```
     * Choose a target, disease, or ligand from the search box
     * enter your API into the API Url field
     * add some query parameters
     * add some fields in curly braces (i.e. {name}) to pass data from Pharos to your API
-    ```aidl
+    ```
     http://localhost:3001/ping?name={name}&message=Hello world
     ```
     * see the preview of how the API results will look on a Pharos details page
@@ -69,7 +69,7 @@ A test API to be used for Pharos' dynamic predictions functionality.
 Here are the steps for creating your own endpoint. As an example, it downloads data from Alliance Genome for display on Disease Details pages.
 See the GitHub branch called "tutorial" for finished example for reference (note, you'd still have to download the data and build the lookup file to run the API).
 1. Download target-disease associations from Alliance Genome and unzip it in a new folder ```./data_sources/alliance-genome```
-    ```aidl
+    ```
     mkdir ./data_sources/alliance-genome
     curl https://download.alliancegenome.org/5.3.0/DISEASE-ALLIANCE-JSON/HUMAN/DISEASE-ALLIANCE-JSON_HUMAN_25.json.gz > ./data_sources/alliance-genome/disease-alliance-json_human_25.json.gz
     gunzip ./data_sources/alliance-genome/disease-alliance-json_human_25.json.gz
@@ -78,13 +78,13 @@ See the GitHub branch called "tutorial" for finished example for reference (note
 2. Write a build script to format the data for easy access
     * in the /data_sources/alliance-genome folder, create a file called ```build.ts```
     * at the top of build.ts, read the unzipped input file
-    ```aidl
+    ```
     const rawData = require('./disease-alliance-json_human_25.json');
     ```
     * Next, build a map so that we can access the data given a gene symbol
         * gene symbol is held in the ```DBObjectSymbol``` field of each object in the data array
         * iterate through the data in ```rawData.data``` and build a Map object holding the relevant data 
-    ```aidl
+    ```
     const targetLookup: Map<string, any[]> = new Map<string, any[]>();
     rawData.data.forEach((row: any) => {
         let associations: any = [];
@@ -117,14 +117,14 @@ See the GitHub branch called "tutorial" for finished example for reference (note
 4. Create the API that will serve the data
     * In the same directory, create a file called ```index.ts```
     * Load the targetLookup file created by the build script
-   ```aidl
+   ```
     import fs from "fs";
     const {reviver} = require("../kinase-cancer-predictions/utilities");
     const targetLookup = JSON.parse(fs.readFileSync(__dirname + '/targetLookup.json', {encoding: "utf-8"}), reviver);
     ```
    * create the endpoint that will serve the data
      * you should make sure to call setHeaders, or do everything setHeaders does
-   ```aidl
+   ```
     import {Request, Response} from "express";
     import {setHeaders} from "../../models/endpoints";
     export function associations(req: Request, res: Response): any {
@@ -134,13 +134,13 @@ See the GitHub branch called "tutorial" for finished example for reference (note
     exports.associations = associations;
     ```
    * edit ```app.ts``` to add a route for your new endpoint
-   ```aidl
+   ```
     import {associations} from "./data_sources/alliance-genome/index"
     app.get("/associations?*", (req: Request, res: Response) => associations(req, res));
     ```
     * visit ```localhost:3001/associations``` to make sure everything is working
     * after the call to ```setHeaders```, fetch the appropriate dataset, given an input argument. the whole function should look like this at this point:
-   ```aidl
+   ```
     export function associations(req: Request, res: Response): any {
         setHeaders(res);
         const parsedUrl = url.parse(req.url);
@@ -160,7 +160,7 @@ See the GitHub branch called "tutorial" for finished example for reference (note
      * Example: ```http://localhost:3001/associations?target=CAMK2A```
      * It should show a JSON object with data from alliance genome
    * Format the JSON object for Pharos consumption, use the helper functions to help ensure the structured data is properly structured
-   ```aidl
+   ```
    if (queryMap.target) {
         const targetQuery = queryMap.target.toString();
         const associations = targetLookup.get(targetQuery);
@@ -218,7 +218,7 @@ into the API Url field.
 
 ### Options
 1. You can also display your data in a card view by specifying the format ("table" or "card") when you create the PredictionSet object
-   ```aidl
+   ```
     const ps = new PredictionSet("Associated Disease", "MedicalCondition", "evidence",
     "An ECO code representing the evidence for the association", null, null, "card");
     ```
