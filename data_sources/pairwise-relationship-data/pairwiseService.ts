@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class PairwiseService {
-    static getInteractorScoresForTerm(term: string) {
+    static getInteractorScoresForTerm(term: string, cutoff: string) {
         return new Promise((resolve, reject) => {
             axios
                 .get(`https://idg.reactome.org/idgpairwise/relationships/combinedScoreGenesForTerm/${term}`)
@@ -10,7 +10,7 @@ class PairwiseService {
                         Object.entries(res.data).map(([gene, score]) => ({
                             gene: gene,
                             score: score,
-                        }))
+                        })).filter(({ score }) => score >= cutoff)
                     );
                 })
                 .catch((err) => {

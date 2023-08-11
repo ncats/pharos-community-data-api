@@ -13,30 +13,30 @@ export async function interactorScores(req: Request, res: Response): Promise<any
 
     if (queryMap.target) {
         const targetQuery = queryMap.target.toString();
-        await PairwiseService.getInteractorScoresForTerm(targetQuery)
+        const score = queryMap.score.toString();
+        await PairwiseService.getInteractorScoresForTerm(targetQuery, score)
             .then(data => {
-                //res.send(data)
-                const ps = new PredictionSet("Associated Disease", "Thing", "evidence",
-                    "An ECO code representing the evidence for the association", 1, 0);
+                const ps = new PredictionSet("Reactome Functional Interactions", "Protein", "Functional Interaction Score",
+                    "Score of how likely two proteins are to interact with each other functionally",
+                    1, 0);
                 Object.entries(data).forEach((intScore: any) => {
                     {
                         intScore = intScore[1]
-                        console.log(intScore);
                         const extraFields: any =
                             {
                                 identifier: [
                                     {
                                         "@type": "PropertyValue",
-                                        "name": "target",
+                                        "name": "Target",
                                         "value": intScore.gene
                                     }],
-                                name: "Reactome FI"
+                                name:""
                             };
-                        ps.addPrediction(intScore.gene, intScore.gene, intScore.score, extraFields);
+                        ps.addPrediction(null, "", intScore.score, extraFields);
                     }
-                    ps.addCitation(getMinimalCitation(35380658));
+                    ps.addCitation(getMinimalCitation(37333417));
                 })
-                res.end(JSON.stringify([[ps.asJSON()]]))
+                res.end(JSON.stringify([ps.asJSON()]))
             });
         return;
     }
