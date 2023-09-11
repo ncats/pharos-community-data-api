@@ -18,7 +18,7 @@ export async function interactorScores(req: Request, res: Response): Promise<any
             .then(data => {
                 const ps = new PredictionSet("Reactome Functional Interactions", "Protein", "Functional Interaction Score",
                     "Score of how likely two proteins are to interact with each other functionally",
-                    1, 0);
+                    1, 0, null , "Target");
                 Object.entries(data).forEach((intScore: any) => {
                     {
                         intScore = intScore[1]
@@ -29,13 +29,12 @@ export async function interactorScores(req: Request, res: Response): Promise<any
                                         "@type": "PropertyValue",
                                         "name": "Target",
                                         "value": intScore.gene
-                                    }],
-                                name:""
+                                    }]
                             };
-                        ps.addPrediction(null, "", intScore.score, extraFields);
+                        ps.addPrediction(intScore.gene, "", intScore.score);
                     }
-                    ps.addCitation(getMinimalCitation(37333417));
                 })
+                ps.addCitation(getMinimalCitation(37333417));
                 res.end(JSON.stringify([ps.asJSON()]))
             });
         return;

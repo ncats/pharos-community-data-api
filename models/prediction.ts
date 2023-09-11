@@ -15,6 +15,7 @@ export class Prediction {
 
 export class PredictionSet {
     name: string;
+    alternateName: string;
     schemaType: string;
     confidenceName: string;
     confidenceDescription: string;
@@ -31,14 +32,18 @@ export class PredictionSet {
                 confidenceDescription: string,
                 confMax: number,
                 confMin: number,
-                style: "table" | "card" = "table") {
+                style: "table" | "card" = "table",
+                alternateName?: string) {
         this.name = name;
         this.schemaType = schemaType;
         this.confidenceName = confidenceName;
         this.confidenceDescription = confidenceDescription;
         this.confMax = confMax;
         this.confMin = confMin;
-        this.style = style
+        this.style = style;
+        if (alternateName) {
+            this.alternateName = alternateName;
+        }
     }
 
     addPrediction(value: string, alternateName: string, confidence: number, extraFields: any = null) {
@@ -67,6 +72,9 @@ export class PredictionSet {
                     "minValue": this.confMin
                 }
             };
+            if (this.alternateName) {
+                predictionObj.alternateName = this.alternateName;
+            }
             if (p.extraFields) {
                 for (var k in p.extraFields) {
                     predictionObj.value[k] = p.extraFields[k];
