@@ -14,30 +14,34 @@ export async function interactorScores(req: Request, res: Response): Promise<any
     if (queryMap.target) {
         const targetQuery = queryMap.target.toString();
         const score = queryMap.score.toString();
-        await PairwiseService.getInteractorScoresForTerm(targetQuery, score)
-            .then(data => {
-                const ps = new PredictionSet("Reactome Functional Interactions", "Protein", "Functional Interaction Score",
-                    "Score of how likely two proteins are to interact with each other functionally",
-                    1, 0, null , "Target");
-                Object.entries(data).forEach((intScore: any) => {
-                    {
-                        intScore = intScore[1]
-                        const extraFields: any =
-                            {
-                                identifier: [
-                                    {
-                                        "@type": "PropertyValue",
-                                        "name": "Target",
-                                        "value": intScore.gene
-                                    }]
-                            };
-                        ps.addPrediction(intScore.gene, "", intScore.score);
-                    }
-                })
-                ps.addCitation(getMinimalCitation(37333417));
-                res.end(JSON.stringify([ps.asJSON()]))
-            });
-        return;
+        try {
+            await PairwiseService.getInteractorScoresForTerm(targetQuery, score)
+                .then(data => {
+                    const ps = new PredictionSet("Reactome Functional Interactions (FIs)", "Protein", "FI Score",
+                        "Score of how likely two proteins are to interact with each other functionally",
+                        1, 0, null, "Query Target");
+                    Object.entries(data).forEach((intScore: any) => {
+                        {
+                            intScore = intScore[1]
+                            const extraFields: any =
+                                {
+                                    identifier: [
+                                        {
+                                            "@type": "PropertyValue",
+                                            "name": "FI Partner",
+                                            "value": intScore.gene
+                                        }]
+                                };
+                            ps.addPrediction(targetQuery, "", intScore.score, extraFields);
+                        }
+                    })
+                    ps.addCitation(getMinimalCitation(37333417));
+                    res.end(JSON.stringify([ps.asJSON()]))
+                });
+            return;
+        } catch (err) {
+            console.error(err);
+        }
     }
     res.end("No Protein Provided!");
 }

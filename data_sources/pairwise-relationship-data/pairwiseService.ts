@@ -10,8 +10,37 @@ class PairwiseService {
                         Object.entries(res.data).map(([gene, score]) => ({
                             gene: gene,
                             score: score,
-                        })).filter(({ score }) => score >= cutoff)
+                        })).filter(({score}) => score >= cutoff)
                     );
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+    static searchTermSecondaryPathways(postData: {}) {
+        return new Promise((resolve, reject) => {
+            axios
+                .post(`https://idg.reactome.org/idgpairwise/pairwise/term/false`, postData)
+                .then((res) => {
+                    resolve(res.data);
+                })
+                .catch((err) => {
+                    reject(err);
+                });
+        });
+    }
+
+    static getAllDataDescs(provenance: string, dataType: string) {
+        return new Promise((resolve, reject) => {
+            axios
+                .get(`https://idg.reactome.org/idgpairwise/datadesc`)
+                .then((res) => {
+                    resolve(
+                        res.data.filter((desc: any) =>
+                            desc.provenance === provenance &&
+                            desc.dataType === dataType))
                 })
                 .catch((err) => {
                     reject(err);
