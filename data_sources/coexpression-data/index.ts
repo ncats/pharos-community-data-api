@@ -15,24 +15,26 @@ function formatCancerSpecificData(data: any) {
             match = match[1];
             let dataSource = match.dataDesc.id.split("|")[0];
             let cancerType = match.dataDesc.id.split("|")[1];
-            match.posGenes.forEach((gene: any) => {
-                const extraFields: any =
-                    {
-                        identifier: [
-                            {
-                                "@type": "PropertyValue",
-                                "name": "Data Source",
-                                "value": dataSource
-                            },
-                            {
-                                "@type": "PropertyValue",
-                                "name": "Cancer Type",
-                                "value": cancerType
-                            }
-                        ],
-                    };
-                ps.addPrediction(gene, "", null, extraFields);
-            })
+            if (match && match.posGenes) {
+                match.posGenes.forEach((gene: any) => {
+                    const extraFields: any =
+                        {
+                            identifier: [
+                                {
+                                    "@type": "PropertyValue",
+                                    "name": "Data Source",
+                                    "value": dataSource
+                                },
+                                {
+                                    "@type": "PropertyValue",
+                                    "name": "Cancer Type",
+                                    "value": cancerType
+                                }
+                            ],
+                        };
+                    ps.addPrediction(gene, "", null, extraFields);
+                });
+            }
         }
     })
     return ps;
@@ -47,22 +49,24 @@ function formatTissueSpecificData(data: any) {
             match = match[1];
             let dataSource = match.dataDesc.id.split("|")[0];
             let tissue = match.dataDesc.id.split("|")[1];
-            match.posGenes.forEach((gene: any) => {
-                const extraFields: any =
-                    {
-                        identifier: [
-                            {
-                                "@type": "PropertyValue",
-                                "name": "Data Source",
-                                "value": dataSource
-                            }, {
-                                "@type": "PropertyValue",
-                                "name": "Tissue",
-                                "value": tissue
-                            }],
-                    };
-                ps.addPrediction(gene, "", null, extraFields);
-            })
+            if (match && match.posGenes) {
+                match.posGenes.forEach((gene: any) => {
+                    const extraFields: any =
+                        {
+                            identifier: [
+                                {
+                                    "@type": "PropertyValue",
+                                    "name": "Data Source",
+                                    "value": dataSource
+                                }, {
+                                    "@type": "PropertyValue",
+                                    "name": "Tissue",
+                                    "value": tissue
+                                }],
+                        };
+                    ps.addPrediction(gene, "", null, extraFields);
+                })
+            }
         }
     })
     ps.addCitation(getMinimalCitation(37333417));
