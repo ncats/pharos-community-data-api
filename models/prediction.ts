@@ -23,6 +23,7 @@ export class PredictionSet {
     confMin: number;
     style: "table" | "card";
     citation: any;
+    facetFields: string[];
 
     predictions: Prediction[] = [];
 
@@ -33,7 +34,7 @@ export class PredictionSet {
                 confMax: number,
                 confMin: number,
                 style: "table" | "card" = "table",
-                alternateName?: string) {
+                alternateName?: string, facetFields: string[] = ['confidence']) {
         this.name = name;
         this.schemaType = schemaType;
         this.confidenceName = confidenceName;
@@ -41,6 +42,7 @@ export class PredictionSet {
         this.confMax = confMax;
         this.confMin = confMin;
         this.style = style;
+        this.facetFields = facetFields;
         if (alternateName) {
             this.alternateName = alternateName;
         }
@@ -70,7 +72,8 @@ export class PredictionSet {
                     "description": this.confidenceDescription,
                     "maxValue": this.confMax,
                     "minValue": this.confMin
-                }
+                },
+                "facetFields": this.facetFields
             };
             if (this.alternateName) {
                 predictionObj.alternateName = this.alternateName;
