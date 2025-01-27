@@ -33,7 +33,7 @@
   "homepage": "https://github.com/KeithKelleher/pharos-predictions-test-api#readme",
   "dependencies": {
     "@types/express": "^4.17.14",
-    "@types/node": "^18.11.9",
+    "@types/node": "^22.9.1",
     "csv": "^6.0.5",
     "csv-parse": "^5.3.3",
     "express": "^4.19.2",
